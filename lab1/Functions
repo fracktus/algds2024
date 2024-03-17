@@ -1,0 +1,61 @@
+#include "Func.h"
+
+int* Read(int a) {
+    int* b = NULL;
+    int result;
+    if (a == 0) {
+        return b;
+    }
+    b = (int*)malloc(sizeof(int) * a);
+
+    for (int i = 0; i < a; ++i) {
+        result = scanf("%d", &b[i]);
+        if (result != 1) {
+            printf("Error");
+            free(b);
+            return NULL;
+        }
+    }
+    return b;
+}
+
+int** Matrix(const int* b, const int* c, const int A, const int n) {
+    if (b == NULL || c == NULL || n == 0) {
+        return NULL;
+    }
+    int** M = (int**)malloc(sizeof(int*) * (n + 1));
+    for (int i = 0; i < (n + 1); ++i) {
+        M[i] = (int*)malloc(sizeof(int) * (A + 1));
+    }
+
+    for (int i = 0; i <= n; ++i) {
+        for (int j = 0; j <= A; ++j) {
+            if (j == 0 || i == 0) {
+                M[i][j] = 0;
+            }
+            else if (b[i - 1] > j) {
+                M[i][j] = M[i - 1][j];
+            }
+            else {
+                int val1 = M[i - 1][j - b[i - 1]] + c[i - 1];
+                int val2 = M[i - 1][j];
+                M[i][j] = (val1 >= val2) ? val1 : val2;
+            }
+        }
+    }
+
+    return M;
+}
+
+void Finder(int n, int A, const int** M, const int* b, int* F) {
+    if (M[n][A] == 0) {
+        return;
+    }
+    if (M[n][A] == M[n - 1][A]) {
+        Finder(n - 1, A, M, b, F);
+    }
+    else {
+        Finder(n - 1, A - b[n - 1], M, b, F);
+        F[n - 1] = n;
+    }
+}
