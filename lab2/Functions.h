@@ -1,6 +1,3 @@
-#ifndef SOURCE_H
-#define SOURCE_H
-
 typedef struct Node {
     int key;
     struct Node* left;
@@ -27,5 +24,3 @@ Node* minvalue(Node* node);
 Node* deletenode(Node* root, int key);
 
 void printAVL(Node* root, int level);
-
-#endif
